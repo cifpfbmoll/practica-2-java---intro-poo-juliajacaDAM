@@ -68,6 +68,13 @@ public class Biblioteca {
     }
     
     public void mostrarLibrosDisponibles(){
+        int ordenLibro = 1;
+        for(int i = 0; i < this.libros.size(); i++){
+            if(this.libros.get(i).getNumeroCopiasDisponibles() > 0){ 
+                System.out.println("LIBRO "+ ordenLibro+ ": "+libros.get(i).toString());
+                ordenLibro++;
+            }
+        }
   
     }
 }
