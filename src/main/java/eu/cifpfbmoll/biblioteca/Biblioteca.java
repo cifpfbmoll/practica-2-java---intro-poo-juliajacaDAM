@@ -89,7 +89,7 @@ public class Biblioteca {
   
     }
     
-    public void seleccionarUsuario(){
+    public void reservarLibro(){
         boolean usuarioNoExiste = true;
         boolean noReservado = true;
         while(usuarioNoExiste && noReservado){
@@ -131,4 +131,72 @@ public class Biblioteca {
     }
     
     //public void
+    public int devolverPosicionUsuario(){
+        int tamañoArrayUsuarios = this.usuarios.size();
+        int vueltas = 0;
+        System.out.println("Selecciona el nif del usuario");
+        for(Usuario user:this.usuarios){
+            System.out.println(user.toString());
+        }
+        Scanner lector = new Scanner(System.in);
+        String usuarioSeleccionado = lector.nextLine();
+        while(vueltas < tamañoArrayUsuarios){
+            if(usuarioSeleccionado.equals(this.usuarios.get(vueltas).getNif())){
+                return vueltas;
+            }
+            vueltas ++;
+        }
+        return -1; 
+    }
+    
+    public void reservarLibro2(){
+        int posicionUsuario = this.devolverPosicionUsuario();
+        if(posicionUsuario != -1){
+            System.out.println("Usuario encontrado");
+            if(this.usuarios.get(posicionUsuario).comprobarSiPuedeSacarMasLibros()){
+                this.mostrarLibrosDisponibles();
+                int posicionLibro = Libro.buscarLibroPorISBN(this.libros);
+                System.out.println(posicionLibro);
+                System.out.println("Copias antes");
+                System.out.println(this.libros.get(posicionLibro).toString());
+                int copiasLibres = this.libros.get(posicionLibro).getNumeroCopiasDisponibles();
+                this.libros.get(posicionLibro).setNumeroCopiasDisponibles(copiasLibres-1);
+                System.out.println("Copias después");
+                System.out.println(this.libros.get(posicionLibro).toString());
+                ArrayList librosUsuario = this.usuarios.get(posicionUsuario).getLibrosReservados();
+                librosUsuario.add(0, this.libros.get(posicionLibro));
+                this.usuarios.get(posicionUsuario).setLibrosReservados(librosUsuario);
+                System.out.println(usuarios.get(posicionUsuario).getLibrosReservados());
+            }else{
+                System.out.println("El usuario no puede sacar más libros");
+            }
+        }else{
+            System.out.println("El usuario no existe");
+        }
+    }
+    
+    public void devolverLibro(){
+        int posicionUsuario = this.devolverPosicionUsuario();
+        if(posicionUsuario != -1){
+            System.out.println("Usuario encontrado");
+            System.out.println("Las reservas de este usuario son: ");
+            System.out.println(this.usuarios.get(posicionUsuario).getLibrosReservados());
+            int posicionLibro = Libro.buscarLibroPorISBN(this.usuarios.get(posicionUsuario).getLibrosReservados());
+            if(posicionLibro != -1){
+                // quito el libro del array de libros reservados del user
+                this.usuarios.get(posicionUsuario).getLibrosReservados().remove(posicionLibro);
+                //pongo disponible un libro más en el array de libros de la biblio
+                int posicionLibroBib = Libro.buscarLibroPorISBN(libros);
+                int librosDispAntes = this.libros.get(posicionLibroBib).getNumeroCopiasDisponibles();
+                this.libros.get(posicionLibroBib).setNumeroCopiasDisponibles(librosDispAntes+1);
+                System.out.println("Libros despues");
+                System.out.println(this.libros.get(posicionLibroBib).getNumeroCopiasDisponibles());
+                System.out.println(this.usuarios.get(posicionUsuario).toString());
+            }else{
+                System.out.println("Ese libro no está reservado por el usuario");
+            }
+        }else{
+            System.out.println("Usuario no encontrado");
+        }
+    }
 }
