@@ -73,6 +73,7 @@ public class Main {
                     System.out.println("E: Eliminar libro por ISBN");
                     System.out.println("BI: Buscar libro por ISBN");
                     System.out.println("BT: Buscar libro por título");
+                    System.out.println("VT: Ver tículos diferentes en la biblioteca");
                     System.out.println("SalirLibros : para volver al menú principal");
                     String opcionGestionLibros = lector.nextLine();
                     switch(opcionGestionLibros){
@@ -99,6 +100,10 @@ public class Main {
                         case "BT":
                             System.out.println("Vas a buscar un libro por título");
                             Libro.buscarLibroPorTitulo(biblioteca.getLibros());
+                            break;
+                        case "VT":
+                            System.out.println("Los titulos diferentes son ");
+                            System.out.println(Libro.getTitulosDistintos());
                             break;
                         case "SalirLibros":
                             System.out.println("Vas a dejar la gestión de libros. Adiós");
@@ -142,7 +147,38 @@ public class Main {
                 break;
             case "U":
                 System.out.println("Vas a gestionar usuarios");
-                biblioteca.seleccionarUsuario();
+                boolean gestionarUsuarios = true;
+                while(gestionarUsuarios){
+                    System.out.println("A: Añadir usuario");
+                    System.out.println("E: Eliminar usuario");
+                    System.out.println("R: Reservar Libro");
+                    System.out.println("D: Devolver Libro");              
+                    System.out.println("SalirUsuarios: volver al menu principal");
+                    String opcionGestionUsuarios = lector.nextLine();
+                    switch(opcionGestionUsuarios){
+                        case "A": 
+                            System.out.println("Vas a añadir un usuario");
+                            Usuario.añadirUsuario(biblioteca.getUsuarios());
+                            break;
+                        case "E":
+                            System.out.println("Vas a eliminar un usuario");
+                            Usuario.borrarUsuario(biblioteca.getUsuarios());
+                            break;
+                        case "R":
+                            System.out.println("Vas a reservar un libro");
+                            biblioteca.reservarLibro2();
+                            break;
+                        case "D":
+                            System.out.println("Vas a devolver");
+                            biblioteca.devolverLibro();
+                            break;
+                        case "SalirUsuarios":
+                            System.out.println("Vas a dejar la gestión de las personas");
+                            gestionarUsuarios = false;
+                        default:
+                            System.out.println("Opción incorrecta. Vuelve a probar");    
+                    }
+                }
                 break;
             case "salir":
                 System.out.println("vas a salir");

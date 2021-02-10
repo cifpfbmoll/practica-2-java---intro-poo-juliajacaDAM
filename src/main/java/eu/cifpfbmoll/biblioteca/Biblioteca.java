@@ -186,6 +186,7 @@ public class Biblioteca {
                 // quito el libro del array de libros reservados del user
                 this.usuarios.get(posicionUsuario).getLibrosReservados().remove(posicionLibro);
                 //pongo disponible un libro más en el array de libros de la biblio
+                System.out.println("Escribe de nuevo el ISBN del libro para ponerlo disponible en la biblio");
                 int posicionLibroBib = Libro.buscarLibroPorISBN(libros);
                 int librosDispAntes = this.libros.get(posicionLibroBib).getNumeroCopiasDisponibles();
                 this.libros.get(posicionLibroBib).setNumeroCopiasDisponibles(librosDispAntes+1);
